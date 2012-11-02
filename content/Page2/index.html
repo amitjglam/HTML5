@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CreateJS export from page3</title>
+
+<script src="libs/easeljs-0.5.0.min.js"></script>
+<script src="libs/preloadjs-0.2.0.min.js"></script>
+<script src="page3.js"></script>
+
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+	canvas = document.getElementById("canvas");
+	images = images||{};
+
+	var manifest = [
+		{src:"images/Bitmap1.png", id:"Bitmap1"}
+	];
+
+	var loader = new createjs.PreloadJS(false);
+	loader.onFileLoad = handleFileLoad;
+	loader.onComplete = handleComplete;
+	loader.loadManifest(manifest);
+}
+
+function handleFileLoad(o) {
+	if (o.type == "image") { images[o.id] = o.result; }
+}
+
+function handleComplete() {
+	exportRoot = new lib.page3();
+
+	stage = new createjs.Stage(canvas);
+	createjs.Touch.enable(stage);
+	stage.addChild(exportRoot);
+	stage.update();
+
+	createjs.Ticker.setFPS(24);
+	//createjs.Ticker.addListener(stage);
+}
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4 margin:0px;">
+	<canvas id="canvas" width="959" height="519" style="background-color:#ffffff; margin:0px;"></canvas>
+    <iframe id="IDisplay" src="http://www.youtube.com/embed/6OLPL5p0fMg" scrolling="no" style="width:480px;height:360px;margin:0px;padding:1px;border:none;left:234px; top:83px; position:absolute; border:1px solid black;"></iframe> 
+</body>
+</html>

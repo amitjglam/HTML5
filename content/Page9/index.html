@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Critical Thinking</title>
+
+<script src="../../libs/easeljs-0.5.0.min.js"></script>
+<script src="../../libs/tweenjs-0.3.0.min.js"></script>
+<script src="../../libs/movieclip-0.5.0.min.js"></script>
+<script src="../../libs/preloadjs-0.2.0.min.js"></script>
+<script src="page10.js"></script>
+<script src="Page10Controller.js"></script>
+
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+	canvas = document.getElementById("canvas");
+	images = images||{};
+
+	var manifest = [
+		{src:"images/Bitmap1.png", id:"Bitmap1"},
+		{src:"images/Bitmap2.png", id:"Bitmap2"},
+		{src:"images/Bitmap3.png", id:"Bitmap3"},
+		{src:"images/Bitmap4.png", id:"Bitmap4"},
+		{src:"images/Bitmap5.png", id:"Bitmap5"}
+	];
+
+	var loader = new createjs.PreloadJS(false);
+	loader.onFileLoad = handleFileLoad;
+	loader.onComplete = handleComplete;
+	loader.loadManifest(manifest);
+}
+
+function handleFileLoad(o) {
+	if (o.type == "image") { images[o.id] = o.result; }
+}
+
+function handleComplete() {
+	exportRoot = new lib.page10();
+
+	stage = new createjs.Stage(canvas);
+	createjs.Touch.enable(stage);
+	stage.addChild(exportRoot);
+	stage.update();
+
+	createjs.Ticker.setFPS(24);
+	createjs.Ticker.addListener(stage);
+	
+	initActivity();
+}
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4;margin:0px;">
+	<canvas id="canvas" width="960" height="520" style="background-color:#ffffff; margin:0px;"></canvas>
+</body>
+</html>
