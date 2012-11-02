@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FRICTION</title>
+<script src="../libs/easel.js"></script>
+<script src="../libs/preload.js"></script>
+<script src="intro.js"></script>
+
+<!--script type="text/javascript" src="libs/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="libs/styles.css" />
+<link rel="stylesheet" href="libs/jquery-ui.css">
+<link rel="stylesheet" href="libs/jquery.ui.all.css">
+<script src="libs/jquery.ui.core.js"></script>
+<script src="libs/jquery.ui.widget.js"></script>
+<script src="libs/jquery.ui.progressbar.js"></script>
+<link rel="stylesheet" href="libs/demos.css"-->
+
+<script type="text/javascript" src="../libs/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../libs/styles.css" />
+<link rel="stylesheet" href="../libs/jquery-ui.css">
+<link rel="stylesheet" href="../libs/jquery.ui.all.css">
+<script src="../libs/jquery.ui.core.js"></script>
+<script src="../libs/jquery.ui.widget.js"></script>
+<script src="../libs/jquery.ui.progressbar.js"></script>
+<link rel="stylesheet" href="../libs/demos.css">
+
+<style type="text/css">
+            html, body{	
+                margin:0;	
+                padding:0;	
+                width:1024px;
+                height:768px;
+            }
+            #dvDisplayVideo
+            {
+                width :887px;
+                height:500px;
+                position: absolute;
+                margin-top: 160px;
+                margin-left: 65px;
+                border:0px solid red;
+                position : absolute;
+                z-index:101;
+            }
+            
+ </style>
+
+ 
+ 
+ 
+ 
+ 
+ <script>
+var canvas, stage, exportRoot, images;
+
+function init() {
+	canvas = document.getElementById("canvas");
+	images = {};
+
+	var manifest = [
+		{src:"images/_6Red_bg.jpg", id:"_6Red_bg"},
+		{src:"images/Bitmap1.png", id:"Bitmap1"}
+	];
+
+	var loader = new PreloadJS(false);
+	loader.onFileLoad = handleFileLoad;
+	loader.onComplete = handleComplete;
+	loader.onProgress = onProgressLoader;
+	loader.loadManifest(manifest);
+}
+
+function handleFileLoad(o) {
+	if (o.type == "image") { images[o.id] = o.result; }
+}
+
+function handleComplete() {
+
+	var tDiv = document.getElementById('progText')
+	var pDiv = document.getElementById('progressbar')
+	//var vDiv = document.getElementById('testviewport')
+	tDiv.style.visibility = 'hidden';
+	pDiv.style.visibility = 'hidden';
+	
+	//vDiv.style.visibility = 'visible';
+	exportRoot = new lib.intro();
+
+	stage = new Stage(canvas);
+	stage.addChild(exportRoot);
+	stage.update();
+
+	Ticker.setFPS(24);
+	Ticker.addListener(stage);
+}
+
+
+
+function onProgressLoader(e)
+{
+	setProgress(Math.round(e*100))
+	
+}
+
+
+function setProgress(per)
+{
+   
+	document.getElementById('progText').innerHTML = '<b>loading assets '+per+'%</b>'
+	
+	$(function() {
+	$( "#progressbar" ).progressbar({
+		value: Number(per)
+	});
+	});
+	//alert(per)
+}
+
+
+
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4">
+	
+		
+	<div id='prog' style="width:200px; height:10px; position:absolute; top:280px; left:430px; z-index:99;">
+
+	<div id="progressbar" style="z-index:100;"></div>
+
+	</div> 
+    <div id='progText' name='progText' style="width:140px; height:10px; position:absolute; top:310px; left:490px; z-index:99;">
+	
+	</div>
+	<canvas id="canvas" width="1024" height="700" style="background-color:#ffffff; position:absolute;"></canvas>
+        <div id="dvDisplayVideo">
+            <video width="887" height="500" controls="controls">
+             <source src="introAnimation.mp4" type="video/mp4" />
+             
+                    Your browser does not support the video tag.
+</video>
+            
+        </div>
+		
+	
+</body>
+</html>

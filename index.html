@@ -1,25 +1,276 @@
-<!DOCTYPE>
+<html>
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Critical Thinking</title>
-<link rel="stylesheet" type="text/css" href="css/Player.css"/>
-<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="js/PlayerController.js"></script>
+<title>FRICTION</title>
+<link rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="jquery-latest.js"></script>     
+<meta id="testViewport" name="viewport" content="width=device-width; height=device-height;initial-scale=1.0; maximum-scale=1.0; user-scalable=no;" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"></META>  
+<style type="text/css">
+html,body{
+			margin:0;	
+			padding:0;
+			width:1024px;
+			height:660px;
+			overflow: hidden;
+		}
+		#dvHeader
+		{
+			margin:0;
+			padding:0;
+			width:1024px;
+			height:74px;
+			position:absolute;
+		}
+		#dvMain
+		{
+			margin-top :-20px;;	
+			margin-left: 0px;
+                        padding:0;
+			width:1024px;
+			height:700px;
+			overflow: hidden;
+			position:absolute;
+			border:0px solid red;
+			z-index :0;
+		}
+		#dvIntro
+		{
+			margin-top:45px;
+			margin-left:235px;
+			width:194px;
+			height:27px;
+			position:absolute;
+			z-index : 10;
+			background:url(images/intro_clicked.png) no-repeat;
+		}
+		#dvFeature
+		{
+			margin-top:45px;
+			margin-left:430px;
+			width:160px;
+			height:27px;
+			position:absolute;
+			z-index : 10;
+			background:url(images/feature.png) no-repeat;
+		}
+		#dvUnderStanding
+		{
+			margin-top:45px;
+			margin-left:591px;
+			width:195px;
+			height:27px;
+			position:absolute;
+			z-index : 10;
+			background:url(images/understanding.png) no-repeat;
+		}
+                #dvFooter
+                {
+                   
+                    margin-top:640px;
+                    margin-left:0px;
+                     width:1024px;
+                    height:36px;
+                    background:url(images/footer.png) no-repeat;
+                    position:absolute;
+                    z-index:110;
+                }
+                #dvNext
+                {
+                    width:24px;
+                    height:28px;
+                    margin-top: 5px;
+                    margin-left: 980px;
+                    background:url(images/next.png) no-repeat; 
+                    position:absolute;
+                    z-index:110;
+                }
+                #dvBack
+                {
+                    width:43px;
+                    height:42px;
+                    margin-top: 3px;
+                    margin-left: 938px;
+                    background:url(images/back.png) no-repeat; 
+                }
+                #dvRefresh
+                {
+                    width:58px;
+                    height:42px;
+                    margin-top: -47px;
+                    margin-left: 100px;
+                    background:url(images/refresh.png) no-repeat;
+                    position:absolute;
+                    z-index:1200;
+                    border:0px solid red;
+                }
+                #dvCaptionIcon
+                {
+                    width:58px;
+                    height:42px;
+                    margin-top: -47px;
+                    margin-left: 150px;
+                    background:url(images/closecaption.png) no-repeat;
+                    position:absolute;
+                    z-index:1200;
+                    border:0px solid red;
+                }
+               
+</style>
 </head>
-
 <body>
+<div id = 'header' style = "position:absolute;z-index:100;">
+<div id = "dvHeader"><img src = "images/physics_header.png" border = '0'/>
+</div>
+<div id ="dvIntro" ></div>
 
-<div id="DivPage">    
- <div id="DivLogo"></div>
-  <iframe id="IDisplay" src="" scrolling="no"></iframe> 
-    <div id="DivMenu">     
-     <div id="DivPlay" class="Navigation" style="left:25px;top:5px;background-image:url(images/Play.png);" value="Play"></div>
-     
-     <div id="DivBack" class="Navigation" style="left:121px;top:5px;background-image:url(images/Back.png);" value="Back"></div>
-     <div id="DivNext" class="Navigation" style="left:215px;top:5px;background-image:url(images/Next.png);" value="Next"></div>        
-    </div> 
- </div>
- <div id="DivTextBoard"></div>
+<div id = "dvFeature"></div>
+<div id = "dvUnderStanding"></div>
+</div>
+<div id = 'dvMain'>
+    <iframe id="manual"  src="intro/intro.html" width="1100px"; height="700px" scrolling = "no"></iframe>
+</div>
+    <div id ="dvFooter">
+        <div id="dvNext" onClick ="handleNevigationEvent('next')"></div>
+        <div id="dvBack" onClick ="handleNevigationEvent('back')"></div>
+        <div id ="dvRefresh" onClick ="refreshPage()"></div>
+        <div id="dvCaptionIcon" onClick ="showHideCaption()"></div>
+    </div>
 </body>
 </html>
+
+<script type="text/javascript"> 
+
+    var nPageArr = ['intro/intro.html','feature/feature.html','understanding/understanding.html','summary/summary.html'];
+    var nIndex = 0;
+        
+        
+        $(document).ready(function() 
+	{
+		addEvents();
+                var agent = navigator.userAgent;
+		var isIphone = (agent.indexOf('iPhone') != -1);
+		var isIpad = (agent.indexOf('iPad') != -1);
+		var mvp = document.getElementById('testViewport');
+		if (isIphone) 
+		{
+				mvp.setAttribute('content','width = 1150;initial-scale=1.0; maximum-scale=1.0; user-scalable=no;');
+				//alert('its iPhone')
+		} else if (isIpad) 
+		{
+				mvp.setAttribute('content','width = device-width;initial-scale=1.0; maximum-scale=1.0; user-scalable=no;');
+				//alert('its iPad')
+		} else
+		{
+			mvp.setAttribute('content','width = 1500');
+			//alert('its Other new')
+		}
+		
+		
+		document.ontouchmove = function(e){ e.preventDefault(); }
+	});
+        
+   function addEvents()
+   {
+     
+      document.getElementById('dvFeature').onclick = handleTabEvent;
+      document.getElementById('dvFeature').nId = 1;
+      document.getElementById('dvUnderStanding').onclick = handleTabEvent;
+      document.getElementById('dvUnderStanding').nId = 2;
+   }
+   function handleTabEvent(e)
+   {
+       
+          resetEvent()
+         handleEvent(e.target.nId)
+         e.target.onclick = null;
+       
+   }
+var count = 0;
+function handleEvent(arg)
+{
+resetAll();
+
+ if(arg == 0)
+ {
+	
+	count = 0;
+        var el=document.getElementById("manual")
+        el.src=nPageArr[0];
+        $('#dvIntro').css("background","url(images/intro_clicked.png)");
+      
+ }
+ else if(arg == 1)
+ {
+	count = 1;
+        $('#dvFeature').css("background","url(images/feature_clicked.png)");
+        var el=document.getElementById("manual")
+      el.src=nPageArr[1];
+ }
+ else if(arg == 2)
+ {
+		count = 2;
+                $('#dvUnderStanding').css("background","url(images/underStanding_Clicked.png)");
+                var el=document.getElementById("manual")
+               el.src=nPageArr[2];
+ }
+ else if(arg == 3)
+     {
+                count = 3;
+                $('#dvUnderStanding').css("background","url(images/underStanding_Clicked.png)");
+                var el=document.getElementById("manual")
+               el.src=nPageArr[3];
+     }
+}
+ function resetAll()
+ {
+	$('#dvUnderStanding').css("background","url(images/understanding.png)");
+	$('#dvIntro').css("background","url(images/intro.png)");
+	$('#dvFeature').css("background","url(images/feature.png)");
+       
+          
+         
+ }
+ function resetEvent()
+ {
+       document.getElementById('dvIntro').onclick = handleTabEvent;
+         document.getElementById('dvIntro').nId = 0;
+         document.getElementById('dvFeature').onclick = handleTabEvent; 
+         document.getElementById('dvUnderStanding').onclick = handleTabEvent;
+ }
+ 
+ function handleNevigationEvent(arg)
+ {
+
+     if(arg == 'next')
+         {
+         
+           if(count<=11)
+                {
+                     
+                     count++;
+                     handleEvent(count);
+                }
+           
+         }
+         else
+             {
+                 if(count>0)
+                     {
+                         count--;
+                         handleEvent(count); 
+                     }
+                
+             }
+ }
+ function refreshPage()
+ {
+     var el=document.getElementById("manual")
+      el.src=nPageArr[count];
+ }
+ function showHideCaption()
+ {
+     
+ }
+
+</script>
